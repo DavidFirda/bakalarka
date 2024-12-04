@@ -7,4 +7,5 @@ postup pri dátach:
 4. generation_incorrect_output
 
 algoritmus:
-1.Q-learning_real_data
+1. Q-learning_real_data
+2.
