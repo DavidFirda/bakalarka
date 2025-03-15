@@ -79,22 +79,26 @@ Model využíva **epsilon-greedy prístup** na výber otázok a **Q-Learning** n
    - Tutor **postupne znižuje epsilon**, čím sa znižuje náhodnosť a viac sa využíva naučená stratégia.
    - Neustále aktualizuje **weak categories** na základe študentskej úspešnosti.
 
-# Porovnanie Politík v TutorPOMDP
+# **Porovnanie Politík v TutorPOMDP**
 
-Dve rôzne politiky použité v modeloch **TutorPOMDP**.
+Tri rôzne politiky použité v modeloch **TutorPOMDP**.
 
-| **Parameter** | **Prvý model (ε-greedy + streak correction)** | **Druhý model (softmax-based)** |
-|--------------|--------------------------------|---------------------------------|
-| **Výber akcie** | ε-greedy, pričom preferuje slabé kategórie | Softmax na základe neistoty a slabých kategórií |
-| **Slabé kategórie** | Preferuje, ale pri sérii chýb prepne na silnú kategóriu | Extra váha pri výbere na základe neistoty |
-| **Náhodnosť** | Riadená **ε-greedy** stratégiou | Ovládaná **softmaxom** s teplotným parameterom |
-| **Dynamické učenie** | Áno, cez prepínanie medzi slabými a silnými kategóriami | Áno, cez zmenu váh a entropiu |
-| **Reakcia na sériu nesprávnych odpovedí** |  Prepína na silnú kategóriu pri 3 nesprávnych odpovediach | Nezohľadňuje explicitne streaky |
-| **Matematická sofistikovanosť** | Nižšia (pravidlá + ε-greedy) | Vyššia (softmax, entropia) |
+| **Parameter** | **Prvý model (ε-greedy + streak correction)** | **Druhý model (softmax-based)** | **Tretí model (Bayesovský Thompson Sampling)** |
+|--------------|--------------------------------|---------------------------------|--------------------------------------|
+| **Výber akcie** | ε-greedy, pričom preferuje slabé kategórie | Softmax na základe neistoty a slabých kategórií | Thompson Sampling na základe Beta distribúcie |
+| **Slabé kategórie** | Preferuje, ale pri sérii chýb prepne na silnú kategóriu | Extra váha pri výbere na základe neistoty | Automaticky deteguje slabé kategórie a preferuje ich |
+| **Náhodnosť** | Riadená **ε-greedy** stratégiou | Ovládaná **softmaxom** s teplotným parameterom | Thompson Sampling prirodzene vyvažuje prieskum a využitie |
+| **Dynamické učenie** | Áno, cez prepínanie medzi slabými a silnými kategóriami | Áno, cez zmenu váh a entropiu | Áno, neustále aktualizuje pravdepodobnosti úspešnosti v kategóriách |
+| **Reakcia na sériu nesprávnych odpovedí** |  Prepína na silnú kategóriu pri 3 nesprávnych odpovediach | Nezohľadňuje explicitne streaky | Ak sa zistí slabá kategória, automaticky dostane vyššiu prioritu |
+| **Matematická sofistikovanosť** | Nižšia (pravidlá + ε-greedy) | Vyššia (softmax, entropia) | Najvyššia (Bayesovská inferencia, Thompson Sampling) |
+
+---
 
 ## **Zhrnutie**
 
-- **Prvý model (ε-greedy + streak correction)** je jednoduchší a intuitívnejší, pričom obsahuje mechanizmus na posilnenie sebavedomia študenta pri sérii nesprávnych odpovedí.
-- **Druhý model (softmax-based)** je sofistikovanejší, dynamicky sa prispôsobuje študentovi pomocou entropie a pravdepodobností.
+- **Prvý model (ε-greedy + streak correction)** je jednoduchý a efektívny, ak chceme rýchlo reagovať na slabé kategórie, no obsahuje manuálne pravidlá.
+- **Druhý model (softmax-based)** používa entropiu a neistotu na dynamickejšiu adaptáciu, ale môže sa zameriavať na široké spektrum oblastí bez priameho preferovania slabých kategórií.
+- **Tretí model (Bayesovský Thompson Sampling)** automaticky **učí pravdepodobnosti úspešnosti pre každú kategóriu** a zameriava sa na slabé oblasti **bez potreby manuálneho nastavovania**. Je najsofistikovanejší a najlepšie kombinuje **prieskum a využitie**.
+
 
 
