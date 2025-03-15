@@ -6,10 +6,12 @@ postup pri dátach:
 3. data_analysis
 4. generation_incorrect_output
 
-algoritmus:
-1. Q-learning
-2. POMDP
-3. POMDP-v2
+Postupnosť práce:
+1. Model študenta
+2. Q-learning
+3. POMDP
+4. POMDP-v2
+5. POMDP-v3
 
 # Student Model:
 
